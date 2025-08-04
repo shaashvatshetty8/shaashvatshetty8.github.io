@@ -3,27 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shaashvat [Last Name] | Software Developer</title>
+    <title>Shaashvat Shetty | Software Developer</title>
     
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    
-    <!-- Google Fonts: Inter for a clean, modern look -->
+    <!-- Google Fonts: Inter for body, Poppins for headings -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     
-    <!-- Favicon - You can create one and link it here -->
-    <link rel="icon" href="https://placehold.co/32x32/334155/ffffff?text=S" type="image/x-icon">
+    <!-- Favicon -->
+    <link rel="icon" href="https://placehold.co/32x32/1e293b/ffffff?text=S" type="image/x-icon">
 
     <style>
-        /* Use the Inter font family defined in the Google Fonts link */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8fafc; /* A light gray background */
+            background-color: #f1f5f9; /* A very light slate background */
+            transition: background-color 0.5s ease;
         }
-        /* Add a subtle transition for smooth scrolling and color changes */
+        h1, h2, h3 {
+            font-family: 'Poppins', sans-serif;
+        }
         .smooth-transition {
             transition: all 0.3s ease-in-out;
         }
@@ -34,13 +35,13 @@
     <!-- Header & Navigation -->
     <header class="bg-white/80 backdrop-blur-lg fixed top-0 left-0 right-0 z-50 shadow-sm">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="https://shaashvatshetty8.github.io" class="text-xl font-bold text-slate-800 hover:text-indigo-600 smooth-transition">Shaashvat's Portfolio</a>
+            <a href="https://shaashvatshetty8.github.io" class="text-xl font-bold text-slate-800 hover:text-slate-600 smooth-transition">Shaashvat's Portfolio</a>
             <nav class="hidden md:flex space-x-8">
-                <a href="#projects" class="text-slate-600 hover:text-indigo-600 font-medium smooth-transition">Projects</a>
-                <a href="#about" class="text-slate-600 hover:text-indigo-600 font-medium smooth-transition">About</a>
-                <a href="#contact" class="text-slate-600 hover:text-indigo-600 font-medium smooth-transition">Contact</a>
+                <a href="#projects" class="text-slate-600 hover:text-slate-900 font-medium smooth-transition">Projects</a>
+                <a href="#about" class="text-slate-600 hover:text-slate-900 font-medium smooth-transition">About</a>
+                <a href="#contact" class="text-slate-600 hover:text-slate-900 font-medium smooth-transition">Contact</a>
             </nav>
-            <a href="#resume" class="hidden md:inline-block bg-indigo-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-indigo-700 smooth-transition shadow-sm">Resume</a>
+            <a href="#resume" class="hidden md:inline-block bg-slate-800 text-white px-5 py-2 rounded-lg font-semibold hover:bg-slate-700 smooth-transition shadow-sm">Resume</a>
         </div>
     </header>
 
@@ -50,14 +51,14 @@
         <!-- Hero Section -->
         <section id="hero" class="container mx-auto px-6 py-20 md:py-32 text-center">
             <div class="max-w-3xl mx-auto">
-                <h1 class="text-4xl md:text-6xl font-bold text-slate-900 mb-4 leading-tight">
+                <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4 leading-tight">
                     Hi, I'm Shaashvat
                 </h1>
-                <p class="text-lg md:text-xl text-slate-600 mb-8">
+                <p class="text-lg text-slate-600 mb-8">
                     A Software Developer passionate about building robust applications and exploring the frontiers of machine learning.
                 </p>
                 <div class="flex justify-center space-x-4">
-                    <a href="#projects" class="bg-indigo-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-indigo-700 smooth-transition shadow-lg">View My Projects</a>
+                    <a href="#projects" class="bg-slate-800 text-white px-8 py-3 rounded-lg font-semibold hover:bg-slate-700 smooth-transition shadow-lg">View My Projects</a>
                     <a href="#contact" class="bg-white text-slate-700 px-8 py-3 rounded-lg font-semibold hover:bg-slate-100 border border-slate-300 smooth-transition">Get In Touch</a>
                 </div>
             </div>
@@ -67,69 +68,69 @@
         <section id="projects" class="bg-white py-20 md:py-24">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">My Projects</h2>
-                    <p class="text-lg text-slate-600 mt-2">Here are a few things I've been working on.</p>
+                    <h2 class="text-3xl font-bold text-slate-900">My Projects</h2>
+                    <p class="text-base text-slate-600 mt-2">Here are a few things I've been working on.</p>
                 </div>
 
                 <!-- Project Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-                    <!-- Project 1: Vision-Language Navigation Project -->
-                    <div class="bg-slate-50 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl smooth-transition transform hover:-translate-y-1 hover:scale-105">
-                        <img src="https://placehold.co/600x400/e2e8f0/334155?text=Project+Screenshot" alt="Vision-Language Navigation Project Screenshot" class="w-full h-48 object-cover">
+                    <!-- Project 1: Computer Vision -->
+                    <div class="project-card bg-slate-50 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl smooth-transition transform hover:-translate-y-1 hover:scale-105" data-color="#e2e8f0">
+                        <img src="https://placehold.co/600x400/1e293b/ffffff?text=Computer+Vision" alt="Computer Vision Project Screenshot" class="w-full h-48 object-cover">
                         <div class="p-6">
-                            <h3 class="text-xl font-bold text-slate-800 mb-2">Vision-Language Navigation System</h3>
-                            <p class="text-slate-600 mb-4">
+                            <h3 class="text-xl font-bold text-slate-800 mb-2">Computer Vision</h3>
+                            <p class="text-base text-slate-600 mb-4">
                                 Developed a system that understands natural language commands (e.g., "move to the red car") to navigate and interact with objects in a visual environment, using YOLO for object detection.
                             </p>
                             <div class="mb-4">
-                                <span class="inline-block bg-indigo-100 text-indigo-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Python</span>
-                                <span class="inline-block bg-indigo-100 text-indigo-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">NLP</span>
-                                <span class="inline-block bg-indigo-100 text-indigo-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Computer Vision</span>
+                                <span class="inline-block bg-slate-200 text-slate-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Python</span>
+                                <span class="inline-block bg-slate-200 text-slate-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">NLP</span>
+                                <span class="inline-block bg-slate-200 text-slate-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">CV</span>
                             </div>
                             <div class="flex space-x-4">
-                                <a href="https://prezi.com/p/gyevliu1xxti/?present=1" target="_blank" rel="noopener noreferrer" class="text-indigo-600 font-semibold hover:underline">View Presentation</a>
-                                <a href="https://github.com/ShaashvatShetty/Vln_objectDetection" target="_blank" rel="noopener noreferrer" class="text-indigo-600 font-semibold hover:underline">GitHub Repo</a>
+                                <a href="https://prezi.com/p/gyevliu1xxti/?present=1" target="_blank" rel="noopener noreferrer" class="text-slate-600 font-semibold hover:underline">View Presentation</a>
+                                <a href="https://github.com/ShaashvatShetty/Vln_objectDetection" target="_blank" rel="noopener noreferrer" class="text-slate-600 font-semibold hover:underline">GitHub Repo</a>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Project 2: Map-Matching Algorithm Analysis -->
-                    <div class="bg-slate-50 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl smooth-transition transform hover:-translate-y-1 hover:scale-105">
-                        <img src="https://placehold.co/600x400/e2e8f0/334155?text=Project+Screenshot" alt="Map-Matching Algorithm Analysis Screenshot" class="w-full h-48 object-cover">
+                    <!-- Project 2: Data Analytics -->
+                    <div class="project-card bg-slate-50 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl smooth-transition transform hover:-translate-y-1 hover:scale-105" data-color="#e2e8f0">
+                        <img src="https://placehold.co/600x400/1e293b/ffffff?text=Data+Analytics" alt="Data Analytics Project Screenshot" class="w-full h-48 object-cover">
                         <div class="p-6">
-                            <h3 class="text-xl font-bold text-slate-800 mb-2">Map-Matching Algorithm Analysis</h3>
-                            <p class="text-slate-600 mb-4">
+                            <h3 class="text-xl font-bold text-slate-800 mb-2">Data Analytics</h3>
+                            <p class="text-base text-slate-600 mb-4">
                                 Benchmarked four map-matching algorithms to correct noisy GPS data. Concluded that a Hidden Markov Model (HMM) was most effective, achieving a mean error as low as 0.69m.
                             </p>
                             <div class="mb-4">
-                                <span class="inline-block bg-indigo-100 text-indigo-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Python</span>
-                                <span class="inline-block bg-indigo-100 text-indigo-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Data Analysis</span>
-                                <span class="inline-block bg-indigo-100 text-indigo-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Algorithms</span>
+                                <span class="inline-block bg-slate-200 text-slate-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Python</span>
+                                <span class="inline-block bg-slate-200 text-slate-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Analysis</span>
+                                <span class="inline-block bg-slate-200 text-slate-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Algorithms</span>
                             </div>
                             <div class="flex space-x-4">
-                                <a href="CMSC396H_Final_Report.pdf" target="_blank" rel="noopener noreferrer" class="text-indigo-600 font-semibold hover:underline">View Report</a>
-                                <a href="https://github.com/shaashvatshetty8/gps_tracker_project" target="_blank" rel="noopener noreferrer" class="text-indigo-600 font-semibold hover:underline">GitHub Repo</a>
+                                <a href="CMSC396H_Final_Report.pdf" target="_blank" rel="noopener noreferrer" class="text-slate-600 font-semibold hover:underline">View Report</a>
+                                <a href="https://github.com/shaashvatshetty8/gps_tracker_project" target="_blank" rel="noopener noreferrer" class="text-slate-600 font-semibold hover:underline">GitHub Repo</a>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Project 3: Fashion MNIST Classification -->
-                    <div class="bg-slate-50 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl smooth-transition transform hover:-translate-y-1 hover:scale-105">
-                        <img src="https://placehold.co/600x400/e2e8f0/334155?text=Project+Screenshot" alt="Fashion MNIST Classification Screenshot" class="w-full h-48 object-cover">
+                    <!-- Project 3: Image Classification -->
+                    <div class="project-card bg-slate-50 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl smooth-transition transform hover:-translate-y-1 hover:scale-105" data-color="#e2e8f0">
+                        <img src="https://placehold.co/600x400/1e293b/ffffff?text=Image+Classification" alt="Image Classification Project Screenshot" class="w-full h-48 object-cover">
                         <div class="p-6">
-                            <h3 class="text-xl font-bold text-slate-800 mb-2">Fashion MNIST Classification</h3>
-                            <p class="text-slate-600 mb-4">
+                            <h3 class="text-xl font-bold text-slate-800 mb-2">Image Classification</h3>
+                            <p class="text-base text-slate-600 mb-4">
                                 Analyzed 7 ML models to classify fashion images. Engineered a full pipeline with PCA and built a CNN that achieved a top accuracy of 91.05%, outperforming traditional models.
                             </p>
                             <div class="mb-4">
-                                <span class="inline-block bg-indigo-100 text-indigo-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Python</span>
-                                <span class="inline-block bg-indigo-100 text-indigo-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">TensorFlow</span>
-                                <span class="inline-block bg-indigo-100 text-indigo-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Scikit-learn</span>
+                                <span class="inline-block bg-slate-200 text-slate-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">Python</span>
+                                <span class="inline-block bg-slate-200 text-slate-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">TensorFlow</span>
+                                <span class="inline-block bg-slate-200 text-slate-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">ML</span>
                             </div>
                             <div class="flex space-x-4">
-                                <a href="stat426_final_report.pdf" target="_blank" rel="noopener noreferrer" class="text-indigo-600 font-semibold hover:underline">View Report</a>
-                                <a href="report_Fashion_MNIST.pdf" target="_blank" rel="noopener noreferrer" class="text-indigo-600 font-semibold hover:underline">View Notebook (PDF)</a>
+                                <a href="stat426_final_report.pdf" target="_blank" rel="noopener noreferrer" class="text-slate-600 font-semibold hover:underline">View Report</a>
+                                <a href="report_Fashion_MNIST.pdf" target="_blank" rel="noopener noreferrer" class="text-slate-600 font-semibold hover:underline">View Notebook (PDF)</a>
                             </div>
                         </div>
                     </div>
@@ -146,8 +147,8 @@
                         <img src="1725014462228.jpeg" alt="Shaashvat" class="rounded-full shadow-2xl mx-auto w-64 h-64 object-cover">
                     </div>
                     <div class="md:w-2/3 text-center md:text-left">
-                        <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">About Me</h2>
-                        <p class="text-lg text-slate-600">
+                        <h2 class="text-3xl font-bold text-slate-900 mb-4">About Me</h2>
+                        <p class="text-base text-slate-600">
                            I’m currently a student at the University of Maryland pursuing dual degrees in Computer Science and Statistics. I have hands-on experience in software development as well as training and fine-tuning machine learning models. Outside of academics, I enjoy swimming, playing chess, and practicing Bharatanatyam, a classical Indian dance form.
                         </p>
                     </div>
@@ -158,10 +159,9 @@
         <!-- Resume Section (Simple link) -->
         <section id="resume" class="bg-white py-20 text-center">
             <div class="container mx-auto px-6">
-                 <h2 class="text-3xl md:text-4xl font-bold text-slate-900">My Resume</h2>
-                 <p class="text-lg text-slate-600 mt-2 mb-8">Feel free to download my resume to learn more about my experience.</p>
-                 <!-- IMPORTANT: Replace 'resume.pdf' with the actual path to your resume file on your server -->
-                 <a href="resume.pdf" class="bg-indigo-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-indigo-700 smooth-transition shadow-lg">Download Resume (PDF)</a>
+                 <h2 class="text-3xl font-bold text-slate-900">My Resume</h2>
+                 <p class="text-base text-slate-600 mt-2 mb-8">Feel free to download my resume to learn more about my experience.</p>
+                 <a href="2025_resume.pdf" target="_blank" rel="noopener noreferrer" class="bg-slate-800 text-white px-8 py-3 rounded-lg font-semibold hover:bg-slate-700 smooth-transition shadow-lg">Download Resume (PDF)</a>
             </div>
         </section>
 
@@ -169,11 +169,11 @@
         <!-- Contact Section -->
         <section id="contact" class="py-20 md:py-24">
             <div class="container mx-auto px-6 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Get In Touch</h2>
-                <p class="text-lg text-slate-600 mt-2 mb-8">
+                <h2 class="text-3xl font-bold text-slate-900">Get In Touch</h2>
+                <p class="text-base text-slate-600 mt-2 mb-8">
                     I'm always open to discussing new projects, creative ideas, or opportunities to be part of an amazing team.
                 </p>
-                <a href="mailto:your-email@example.com" class="inline-block bg-indigo-600 text-white text-lg px-8 py-4 rounded-lg font-semibold hover:bg-indigo-700 smooth-transition shadow-lg">
+                <a href="mailto:your-email@example.com" class="inline-block bg-slate-800 text-white text-lg px-8 py-4 rounded-lg font-semibold hover:bg-slate-700 smooth-transition shadow-lg">
                     Say Hello
                 </a>
             </div>
@@ -182,16 +182,37 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-slate-800 text-slate-400 py-10">
+    <footer class="bg-slate-900 text-slate-400 py-10">
         <div class="container mx-auto px-6 text-center">
             <div class="flex justify-center space-x-6 mb-4">
                 <a href="#" class="hover:text-white smooth-transition">GitHub</a>
                 <a href="#" class="hover:text-white smooth-transition">LinkedIn</a>
                 <a href="https://www.chess.com/member/shaashvatshetty" target="_blank" rel="noopener noreferrer" class="hover:text-white smooth-transition">Chess.com</a>
             </div>
-            <p>&copy; 2025 Shaashvat [Last Name]. All Rights Reserved.</p>
+            <p>&copy; 2025 Shaashvat Shetty. All Rights Reserved.</p>
         </div>
     </footer>
+    
+    <!-- JavaScript for background change on hover -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const projectCards = document.querySelectorAll('.project-card');
+            const body = document.body;
+            const defaultBgColor = '#f1f5f9'; // Original body background color
+
+            projectCards.forEach(card => {
+                const hoverColor = card.dataset.color;
+
+                card.addEventListener('mouseenter', () => {
+                    body.style.backgroundColor = hoverColor;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    body.style.backgroundColor = defaultBgColor;
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>
