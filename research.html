@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>KV-Cache Pruning Research | Shaashvat Shetty</title>
+<meta name="description" content="Profiling and pruning visual-token KV caches in Qwen2.5-VL. Does Mustafar-style magnitude pruning, built for text-only caches, transfer to visual tokens? Results, charts and an honest negative kernel result.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%236f9bff'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='17' font-weight='700' fill='%230b0c0f' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=2">
+<script>
+  (function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<noscript><style>.reveal{opacity:1!important;transform:none!important}[role="tabpanel"][hidden]{display:block!important}.tabs{display:none}</style></noscript>
+</head>
+<body>
+<div class="bg-field" aria-hidden="true"></div>
+<div class="bg-grid" aria-hidden="true"></div>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="nav">
+      <a class="brand" href="index.html">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span>Shaashvat Shetty<br><span class="brand-sub">CS + Statistics, UMD</span></span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="research.html">Research</a>
+        <a href="index.html#experience">Experience</a>
+        <a href="projects.html">Projects</a>
+        <a href="teaching.html">Teaching</a>
+        <a href="index.html#about">About</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" data-theme-toggle type="button" aria-label="Toggle colour theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+        <button class="icon-btn menu-toggle" data-menu-toggle type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+        <a class="btn btn-primary btn-sm" href="DREU_KV_Cache_Pruning_Report.pdf" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+          Paper
+        </a>
+      </div>
+    </div>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" hidden aria-label="Mobile">
+    <a href="index.html">Home</a>
+    <a href="research.html">Research</a>
+    <a href="projects.html">Projects</a>
+    <a href="teaching.html">Teaching</a>
+    <a href="index.html#contact">Contact</a>
+  </nav>
+  <div class="scroll-bar" aria-hidden="true"></div>
+</header>
+
+<main>
+
+  <!-- ============ HEADER ============ -->
+  <section class="hero" style="padding-bottom:0">
+    <div class="wrap">
+      <span class="eyebrow">CRA-WP DREU &middot; Summer&ndash;Fall 2026 &middot; CASL, University of Maryland</span>
+      <h1 style="font-size:clamp(2rem,4.6vw,3.2rem);max-width:19ch">Profiling and pruning visual-token <span class="grad">KV caches</span> in Qwen2.5-VL</h1>
+      <p class="hero-lede" style="max-width:66ch">
+        Does Mustafar-style unstructured magnitude pruning, developed for text-only caches, transfer to
+        visual tokens? Advised by <strong>Prof. Bahar Asgari</strong>. Continuing as an independent study.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="DREU_KV_Cache_Pruning_Report.pdf" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+          Read the full paper
+        </a>
+        <a class="btn btn-ghost" href="#results">Jump to results</a>
+      </div>
+      <div class="tags" style="margin-bottom:8px">
+        <span class="tag tag--accent">Qwen2.5-VL-3B-Instruct</span>
+        <span class="tag">PyTorch</span>
+        <span class="tag">Hugging Face</span>
+        <span class="tag">CUDA</span>
+        <span class="tag">Triton</span>
+        <span class="tag">TextVQA</span>
+        <span class="tag">DocVQA</span>
+        <span class="tag">COCO</span>
+        <span class="tag">ImageNet</span>
+        <span class="tag">UMIACS Nexus</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABSTRACT ============ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="prose reveal">
+        <h2 style="font-size:clamp(1.4rem,2.6vw,1.9rem)">The problem</h2>
+        <p>
+          A vision-language model reads an image by turning it into tokens — hundreds of them for a photo,
+          more than a thousand for a single page of a document. Each one adds a Key and a Value entry to the
+          cache at <em>every</em> transformer layer, and those entries sit in GPU memory for the whole
+          generation. Past a certain size the KV cache, not the model's weights, is what you are actually
+          paying to serve.
+        </p>
+        <p>
+          Recent work shrinks the KV cache of text-only models by exploiting structure inside it: a handful of
+          large-magnitude elements and outlier channels carry most of the signal, so the rest can go.
+          <strong>Mustafar</strong> turns that into one rule — per-token magnitude pruning at the element level.
+          But that structure had only ever been measured in <em>text</em> caches. Nobody had checked whether a
+          visual token's Key vector, which comes out of a vision encoder rather than a language model, looks the
+          same. If it does, the rule transfers for free. If it does not, applying it anyway quietly discards
+          visual information the model needs.
+        </p>
+        <p>
+          So this project measures first and prunes second. Profiling answers the structural question;
+          the pruning study is the validation step, not the assumed conclusion.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ APPROACH ============ -->
+  <section class="section--tight">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Method</span>
+        <h2>How it was built</h2>
+      </div>
+      <div class="skill-grid">
+        <div class="card skill-card reveal">
+          <h4>01 &mdash; Capture &amp; profile</h4>
+          <p style="font-size:.91rem;margin:0">
+            Prefill Key and Value tensors are saved per layer and split into visual and text positions.
+            Qwen2.5-VL marks image placeholder tokens explicitly, so the split is verifiable rather than
+            guessed. Magnitude distributions, channel concentration and visual-to-text ratios are profiled
+            on calibration sets of up to 500 images from COCO, ImageNet and TextVQA.
+          </p>
+        </div>
+        <div class="card skill-card reveal">
+          <h4>02 &mdash; Prune during generation</h4>
+          <p style="font-size:.91rem;margin:0">
+            Mustafar's token-wise magnitude rule is applied during real generation, not scored offline, and
+            only to visual-token entries. Text entries stay dense throughout, so any accuracy change is
+            attributable to visual pruning alone. Every compared run is pixel-matched to a fixed visual-token
+            budget, checked per example with zero mismatches.
+          </p>
+        </div>
+        <div class="card skill-card reveal">
+          <h4>03 &mdash; Store it for real</h4>
+          <p style="font-size:.91rem;margin:0">
+            A pruned tensor is cut into 64-element tiles. Each tile holds its surviving values packed tightly,
+            a 64-bit bitmap marking which positions survived, and a 32-bit offset into the packed array. The
+            cache reports its actual byte count while generating, so memory numbers are measured rather than
+            calculated.
+          </p>
+        </div>
+      </div>
+
+      <div class="card reveal" style="margin-top:16px">
+        <div class="card-body">
+          <h4 style="font-family:var(--mono);font-size:.73rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 13px">The three controls</h4>
+          <p style="font-size:.92rem;margin-bottom:12px">Three controls isolate what actually drives the accuracy change, rather than letting one explanation go unchallenged:</p>
+          <ul class="tl-list">
+            <li><strong style="color:var(--ink)">Random</strong> &mdash; the same achieved sparsity, with entries chosen at random instead of by magnitude.</li>
+            <li><strong style="color:var(--ink)">Uniform</strong> &mdash; the magnitude rule applied to text Keys as well as visual Keys.</li>
+            <li><strong style="color:var(--ink)">Structured</strong> &mdash; whole channels dropped by the same magnitude score, at matched sparsity.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RESULTS ============ -->
+  <section id="results" class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Results</span>
+        <h2>What the measurements say</h2>
+        <p>Accuracy uses fixed-reference, right-or-wrong metrics rather than text-similarity scores: relaxed VQA accuracy on TextVQA, ANLS on DocVQA, 500 examples each.</p>
+      </div>
+
+      <div class="finding reveal" style="font-size:1rem;margin-bottom:28px">
+        <b>Finding 1.</b> Visual-token Key caches carry the same layer-wise outlier-channel concentration as
+        text-token Key caches, at comparable magnitude. Across all 36 layers both curves rise and fall together,
+        including a shared spike near layer 27 where both jump from about 0.15 to over 0.30. Mean absolute Key
+        magnitude stays within roughly a factor of two between modalities almost everywhere. There is no separate
+        "visual regime" for Mustafar's rule to miss.
+      </div>
+
+      <!-- CHART 1 -->
+      <div class="card chart-card reveal">
+        <div class="chart-head">
+          <h3 class="chart-title">Magnitude pruning holds to 90% sparsity. Random collapses immediately.</h3>
+          <p class="chart-sub">Task accuracy against visual-token Key sparsity, text entries left dense. 500 examples per dataset per point.</p>
+        </div>
+        <div class="chart-scroll">
+          <svg class="chart-svg" viewBox="0 0 700 360" role="img" aria-label="Line chart of task accuracy against visual-token Key sparsity. Magnitude-selected pruning stays near its dense baseline through 90 percent sparsity on both TextVQA and DocVQA, while random selection at identical sparsity falls sharply from 50 percent onward.">
+            <!-- gridlines -->
+            <g class="gridline">
+              <line x1="64" y1="24"  x2="630" y2="24"/>
+              <line x1="64" y1="93"  x2="630" y2="93"/>
+              <line x1="64" y1="162" x2="630" y2="162"/>
+              <line x1="64" y1="231" x2="630" y2="231"/>
+            </g>
+            <line class="axisline" x1="64" y1="300" x2="630" y2="300"/>
+            <line class="axisline" x1="64" y1="24" x2="64" y2="300"/>
+
+            <!-- y ticks -->
+            <g class="tick" text-anchor="end">
+              <text x="54" y="28">1.0</text>
+              <text x="54" y="97">0.8</text>
+              <text x="54" y="166">0.6</text>
+              <text x="54" y="235">0.4</text>
+              <text x="54" y="304">0.2</text>
+            </g>
+            <text class="axis-title" x="18" y="162" transform="rotate(-90 18 162)" text-anchor="middle">task score</text>
+
+            <!-- x ticks -->
+            <g class="tick" text-anchor="middle">
+              <text x="64"  y="320">0</text>
+              <text x="378" y="320">50</text>
+              <text x="441" y="320">60</text>
+              <text x="504" y="320">70</text>
+              <text x="567" y="320">80</text>
+              <text x="630" y="320">90</text>
+            </g>
+            <text class="axis-title" x="347" y="344" text-anchor="middle">visual-token Key cache sparsity (%)</text>
+
+            <!-- DocVQA magnitude -->
+            <path class="mark-line" stroke="var(--series-2)" d="M64,51.3 L378.4,51.3 L441.3,50.2 L504.2,51.9 L567.1,49.2 L630,78.2"/>
+            <g fill="var(--series-2)" class="mark-dot">
+              <circle cx="64" cy="51.3" r="4.5"><title>DocVQA, magnitude, dense baseline: 0.921</title></circle>
+              <circle cx="378.4" cy="51.3" r="4.5"><title>DocVQA, magnitude, 50% sparsity: 0.921</title></circle>
+              <circle cx="441.3" cy="50.2" r="4.5"><title>DocVQA, magnitude, 60% sparsity: 0.924</title></circle>
+              <circle cx="504.2" cy="51.9" r="4.5"><title>DocVQA, magnitude, 70% sparsity: 0.919</title></circle>
+              <circle cx="567.1" cy="49.2" r="4.5"><title>DocVQA, magnitude, 80% sparsity: 0.927</title></circle>
+              <circle cx="630" cy="78.2" r="4.5"><title>DocVQA, magnitude, 90% sparsity: 0.843</title></circle>
+            </g>
+            <text class="dlabel" fill="var(--series-2)" x="640" y="74">DocVQA</text>
+            <text class="tick" x="640" y="87">magnitude</text>
+
+            <!-- TextVQA magnitude -->
+            <path class="mark-line" stroke="var(--series-1)" d="M64,82.7 L378.4,81.6 L441.3,80.9 L504.2,80.9 L567.1,82.3 L630,92.7"/>
+            <g fill="var(--series-1)" class="mark-dot">
+              <circle cx="64" cy="82.7" r="4.5"><title>TextVQA, magnitude, dense baseline: 0.830</title></circle>
+              <circle cx="378.4" cy="81.6" r="4.5"><title>TextVQA, magnitude, 50% sparsity: 0.833</title></circle>
+              <circle cx="441.3" cy="80.9" r="4.5"><title>TextVQA, magnitude, 60% sparsity: 0.835</title></circle>
+              <circle cx="504.2" cy="80.9" r="4.5"><title>TextVQA, magnitude, 70% sparsity: 0.835</title></circle>
+              <circle cx="567.1" cy="82.3" r="4.5"><title>TextVQA, magnitude, 80% sparsity: 0.831</title></circle>
+              <circle cx="630" cy="92.7" r="4.5"><title>TextVQA, magnitude, 90% sparsity: 0.801</title></circle>
+            </g>
+            <text class="dlabel" fill="var(--series-1)" x="640" y="111">TextVQA</text>
+            <text class="tick" x="640" y="124">magnitude</text>
+
+            <!-- TextVQA random -->
+            <path class="mark-line" stroke="var(--series-1)" stroke-dasharray="2 5" opacity="0.85" d="M378.4,165.4 L441.3,206.8 L504.2,236.2 L567.1,248.2 L630,253.4"/>
+            <g fill="var(--series-1)" class="mark-dot" opacity="0.85">
+              <circle cx="378.4" cy="165.4" r="4"><title>TextVQA, random, 50% sparsity: 0.590</title></circle>
+              <circle cx="441.3" cy="206.8" r="4"><title>TextVQA, random, 60% sparsity: 0.470</title></circle>
+              <circle cx="504.2" cy="236.2" r="4"><title>TextVQA, random, 70% sparsity: 0.385</title></circle>
+              <circle cx="567.1" cy="248.2" r="4"><title>TextVQA, random, 80% sparsity: 0.350</title></circle>
+              <circle cx="630" cy="253.4" r="4"><title>TextVQA, random, 90% sparsity: 0.335</title></circle>
+            </g>
+            <text class="dlabel" fill="var(--series-1)" x="640" y="250" opacity="0.9">TextVQA</text>
+            <text class="tick" x="640" y="263">random</text>
+
+            <!-- DocVQA random -->
+            <path class="mark-line" stroke="var(--series-2)" stroke-dasharray="2 5" opacity="0.85" d="M378.4,199.9 L441.3,241.3 L504.2,265.5 L567.1,274.1 L630,281"/>
+            <g fill="var(--series-2)" class="mark-dot" opacity="0.85">
+              <circle cx="378.4" cy="199.9" r="4"><title>DocVQA, random, 50% sparsity: 0.490</title></circle>
+              <circle cx="441.3" cy="241.3" r="4"><title>DocVQA, random, 60% sparsity: 0.370</title></circle>
+              <circle cx="504.2" cy="265.5" r="4"><title>DocVQA, random, 70% sparsity: 0.300</title></circle>
+              <circle cx="567.1" cy="274.1" r="4"><title>DocVQA, random, 80% sparsity: 0.275</title></circle>
+              <circle cx="630" cy="281" r="4"><title>DocVQA, random, 90% sparsity: 0.255</title></circle>
+            </g>
+            <text class="dlabel" fill="var(--series-2)" x="640" y="287" opacity="0.9">DocVQA</text>
+            <text class="tick" x="640" y="300">random</text>
+          </svg>
+        </div>
+        <div class="chart-legend">
+          <span><i class="swatch" style="background:var(--series-1)"></i> TextVQA (relaxed accuracy)</span>
+          <span><i class="swatch" style="background:var(--series-2)"></i> DocVQA (ANLS)</span>
+          <span><i class="swatch swatch--dash" style="background:var(--ink-3)"></i> solid = magnitude-selected &middot; dotted = random at identical sparsity</span>
+        </div>
+        <p class="chart-note">
+          Two things follow. Selecting <em>by magnitude</em> is what matters — the random control's immediate
+          collapse shows the visual Key cache really does contain exploitable structure, and Mustafar's rule
+          finds it. And the modality difference is narrower than "visual tokens are special": text Keys are also
+          safely prunable to 70%. The danger zone is 80&ndash;90% sparsity in general, not text tokens in particular.
+        </p>
+      </div>
+
+      <div class="finding reveal" style="font-size:1rem;margin:28px 0">
+        <b>Finding 2.</b> Pruning Keys or Values alone is safe to 90% sparsity on both datasets. Pruning both
+        together is safe only to 70%, and past that fails harder than either alone — at 90% the Key-only and
+        Value-only arms beat the combined arm by 0.15&ndash;0.25 accuracy points, with 95% confidence intervals
+        that exclude zero on both datasets.
+      </div>
+
+      <!-- TABLE 1 -->
+      <div class="table-wrap reveal">
+        <table>
+          <caption>Best asymmetric Key/Value sparsity operating point, found by grid search. 500 examples per dataset. The reduction column is the calculated bitmap footprint.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Dataset</th>
+              <th scope="col" class="num">Dense baseline</th>
+              <th scope="col" class="num">Key 70% / Value 80%</th>
+              <th scope="col" class="num">Score drop</th>
+              <th scope="col" class="num">KV reduction</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>TextVQA <span style="color:var(--ink-4)">(relaxed accuracy)</span></td><td class="num">0.830</td><td class="num">0.817</td><td class="num bad">&minus;0.013</td><td class="num good">57.7%</td></tr>
+            <tr><td>DocVQA <span style="color:var(--ink-4)">(ANLS)</span></td><td class="num">0.921</td><td class="num">0.915</td><td class="num bad">&minus;0.006</td><td class="num good">58.1%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- TABLE 2 -->
+      <div class="table-wrap reveal" style="margin-top:18px">
+        <table>
+          <caption>Stored cache-object memory reduction at Key 70% / Value 80%, visual-only with text left dense. Measured values are real byte counts recorded during generation, not estimates.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Dataset</th>
+              <th scope="col" class="num">Calculated</th>
+              <th scope="col" class="num">Measured (compressed cache)</th>
+              <th scope="col" class="num">Measured (kernel path)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>TextVQA</td><td class="num">57.7%</td><td class="num">56.5%</td><td class="num">55.2%</td></tr>
+            <tr><td>DocVQA</td><td class="num">58.0%</td><td class="num">56.7%</td><td class="num">56.8%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="prose reveal" style="margin-top:22px">
+        <p>
+          Measured savings land within one to two percentage points of the calculated ones, on both datasets and
+          both storage paths. The measured number is slightly smaller because the real format pays costs the
+          arithmetic treats ideally: per-tile bitmaps and offsets, and nonzero counts padded to multiples of
+          eight so reads stay aligned. That agreement is the point. The memory claim rests on a format that
+          actually runs, not on a formula.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KERNEL ============ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">The negative result</span>
+        <h2>The kernel is correct, and slower than dense</h2>
+        <p>The bitmap format only pays off if attention never has to decompress it. Mustafar's CUDA kernel computes straight from the packed tiles. It works. It just isn't faster here.</p>
+      </div>
+
+      <div class="card chart-card reveal">
+        <div class="chart-head">
+          <h3 class="chart-title">GPU time per attention call, wrapper code excluded</h3>
+          <p class="chart-sub">RTX A4000, Qwen2.5-VL's 16-query / 2-KV-head geometry, Key 70% / Value 80%. Lower is better.</p>
+        </div>
+        <div class="chart-scroll">
+          <svg class="chart-svg" viewBox="0 0 640 320" role="img" aria-label="Grouped bar chart of device time per attention call. At batch 1 the dense Flash-Decoding baseline takes 12 microseconds against 65 for Mustafar's Key and Value kernels and 95 for the whole Mustafar arm. At batch 8 the figures are 33, 221 and 289 microseconds.">
+            <g class="gridline">
+              <line x1="56" y1="24"    x2="600" y2="24"/>
+              <line x1="56" y1="103.3" x2="600" y2="103.3"/>
+              <line x1="56" y1="182.7" x2="600" y2="182.7"/>
+            </g>
+            <line class="axisline" x1="56" y1="262" x2="600" y2="262"/>
+            <line class="axisline" x1="56" y1="24" x2="56" y2="262"/>
+
+            <g class="tick" text-anchor="end">
+              <text x="46" y="28">300</text>
+              <text x="46" y="107">200</text>
+              <text x="46" y="187">100</text>
+              <text x="46" y="266">0</text>
+            </g>
+            <text class="axis-title" x="16" y="143" transform="rotate(-90 16 143)" text-anchor="middle">device time per attention call (µs)</text>
+
+            <!-- batch 1 -->
+            <path fill="var(--series-1)" d="M108,262 V256.5 Q108,252.5 112,252.5 H156 Q160,252.5 160,256.5 V262 Z"><title>Batch 1, dense Flash-Decoding: 12 µs</title></path>
+            <path fill="var(--series-2)" d="M164,262 V214.4 Q164,210.4 168,210.4 H212 Q216,210.4 216,214.4 V262 Z"><title>Batch 1, Mustafar Key + Value kernels only: 65 µs</title></path>
+            <path fill="var(--series-3)" d="M220,262 V190.6 Q220,186.6 224,186.6 H268 Q272,186.6 272,190.6 V262 Z"><title>Batch 1, whole Mustafar arm including glue: 95 µs</title></path>
+            <g class="dlabel" text-anchor="middle" fill="var(--ink-2)">
+              <text x="134" y="245">12</text>
+              <text x="190" y="203">65</text>
+              <text x="246" y="179">95</text>
+            </g>
+
+            <!-- batch 8 -->
+            <path fill="var(--series-1)" d="M358,262 V239.8 Q358,235.8 362,235.8 H406 Q410,235.8 410,239.8 V262 Z"><title>Batch 8, dense Flash-Decoding: 33 µs</title></path>
+            <path fill="var(--series-2)" d="M414,262 V90.7 Q414,86.7 418,86.7 H462 Q466,86.7 466,90.7 V262 Z"><title>Batch 8, Mustafar Key + Value kernels only: 221 µs</title></path>
+            <path fill="var(--series-3)" d="M470,262 V36.7 Q470,32.7 474,32.7 H518 Q522,32.7 522,36.7 V262 Z"><title>Batch 8, whole Mustafar arm including glue: 289 µs</title></path>
+            <g class="dlabel" text-anchor="middle" fill="var(--ink-2)">
+              <text x="384" y="228">33</text>
+              <text x="440" y="79">221</text>
+              <text x="496" y="25">289</text>
+            </g>
+
+            <g class="tick" text-anchor="middle" font-weight="600">
+              <text x="190" y="282">Batch 1</text>
+              <text x="440" y="282">Batch 8</text>
+            </g>
+            <text class="axis-title" x="328" y="308" text-anchor="middle">5.3&#215; slower at batch 1 &middot; 6.7&#215; slower at batch 8</text>
+          </svg>
+        </div>
+        <div class="chart-legend">
+          <span><i class="swatch" style="background:var(--series-1)"></i> Dense (PyTorch Flash-Decoding)</span>
+          <span><i class="swatch" style="background:var(--series-2)"></i> Mustafar Key + Value kernels only</span>
+          <span><i class="swatch" style="background:var(--series-3)"></i> Whole Mustafar arm, including glue</span>
+        </div>
+        <p class="chart-note">
+          The comparison is fair: profiling confirmed the dense baseline dispatches to
+          <code style="font-family:var(--mono);font-size:.86em">flash_fwd_splitkv_kernel</code>, PyTorch's bundled
+          FlashAttention-2 decode path — the same class of kernel Mustafar's own paper compares against.
+        </p>
+      </div>
+
+      <div class="prose reveal" style="margin-top:26px">
+        <p>
+          Correctness is not the issue. Integrated through its upstream reference calling convention and compared
+          against the dense-zero path, the kernel produced <strong>zero prediction mismatches across 500 examples
+          on both TextVQA and DocVQA</strong>. Speed is the issue, and it has two separate causes.
+        </p>
+      </div>
+
+      <div class="finding finding--open reveal" style="font-size:.98rem">
+        <b>GPU time.</b> Mustafar's kernel is 5&ndash;7&times; slower than Flash-Decoding at this model's
+        16-query / 2-KV-head geometry even before counting integration overhead, likely because per-query-head
+        batching re-reads each compressed KV head eight times and leaves most tensor-core rows idle.
+        <br><br>
+        <b>Launch overhead.</b> On top of that, the path issues about 15 separate CPU-side kernel launches per
+        attention call against dense's two. Wall time sits flat near 405&nbsp;µs across batch sizes 1 to 8 while
+        GPU work triples underneath. Fusing that glue would bring wall time down toward the GPU-time floor — but
+        that floor is still several times slower than dense, so fusion alone will not close the gap.
+      </div>
+
+      <div class="prose reveal">
+        <p>
+          There is also a more basic question to settle before more kernel tuning. At batch 1 this model's dense
+          KV cache is only about 1&nbsp;MB per layer, small enough that it may never leave the GPU's L2 cache.
+          Mustafar's whole performance case assumes decoding is limited by DRAM bandwidth. If the working set
+          stays resident in L2 at this context length, that assumption is not actually being tested, and the
+          comparison would need to move to longer contexts or larger batches to be a fair test of the kernel's
+          design point.
+        </p>
+        <p>
+          One separate finding concerns the compression step itself. The Triton converters that pack the cache
+          into bitmap form are cheap once amortised — 0.04&ndash;0.17% of a decode step, spread over 1,024
+          generated tokens. But they issue 10 to 66 device-to-host memory copies per call. Those round-trips
+          through the CPU are a plausible mechanism for the time-to-first-token increase Mustafar's own paper
+          reports, independent of anything in this integration.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ IMPLICATIONS ============ -->
+  <section class="section--tight">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Implications</span>
+        <h2>What this is good for</h2>
+      </div>
+      <div class="skill-grid">
+        <div class="card skill-card reveal">
+          <h4>Practical</h4>
+          <p style="font-size:.91rem;margin:0">A serving system can cut stored KV-cache memory roughly in half at under a two-point accuracy cost, pruning visual-token entries almost exclusively. Because this works inside each token's cache vector rather than removing whole tokens, it composes with token-dropping and quantisation instead of competing with them.</p>
+        </div>
+        <div class="card skill-card reveal">
+          <h4>Scientific</h4>
+          <p style="font-size:.91rem;margin:0">Text-only KV-cache compression assumptions do transfer to visual tokens in this model. The same magnitude structure is there and the same rule exploits it the same way. What remains is a difference in sparsity <em>tolerance</em> at the extreme end, not a difference in which rule applies.</p>
+        </div>
+        <div class="card skill-card reveal">
+          <h4>Systems</h4>
+          <p style="font-size:.91rem;margin:0">The memory win is real, and the measured-versus-calculated agreement shows the bitmap format delivers what its arithmetic promises. The speed win depends heavily on attention-head geometry and kernel engineering, and it did not materialise against a modern FlashAttention baseline.</p>
+        </div>
+      </div>
+
+      <div class="card reveal" style="margin-top:16px">
+        <div class="card-body">
+          <h4 style="font-family:var(--mono);font-size:.73rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:0 0 13px">Limitations, stated up front</h4>
+          <p style="font-size:.92rem;margin:0">
+            One model (Qwen2.5-VL-3B). Accuracy scored on the dense-zero path, where pruned entries are zeroed
+            rather than physically removed. The first generated token always comes from dense prefill, and VQA
+            answers are short, so the decode-time test of pruning is conservative.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ NEXT ============ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Ongoing</span>
+        <h2>Where it goes next</h2>
+        <p>The project continues as an independent study with the supervising professor through the school year, along two tracks.</p>
+      </div>
+      <div class="timeline">
+        <div class="tl-item is-current reveal">
+          <span class="tl-dot" aria-hidden="true"></span>
+          <div class="tl-card">
+            <div class="tl-top"><span class="tl-role">Importance-aware, per-token pruning</span></div>
+            <p style="font-size:.93rem;margin:0">
+              Right now every visual token gets the same sparsity target, and the random control suggests that
+              leaves something on the table: the cache's usable structure is spread unevenly across tokens.
+              A question about text in a document's corner makes most of the page's white space irrelevant. The
+              current work tests whether per-token importance can be estimated cheaply enough at inference time
+              to set a non-uniform budget — prune an unimportant patch at 90% while an important one stays near
+              70% — and whether that beats the fixed-sparsity curve at the same average memory budget.
+            </p>
+          </div>
+        </div>
+        <div class="tl-item is-current reveal">
+          <span class="tl-dot" aria-hidden="true"></span>
+          <div class="tl-card">
+            <div class="tl-top"><span class="tl-role">Closing the kernel speed gap</span></div>
+            <p style="font-size:.93rem;margin:0">
+              Getting a real end-to-end, batched <code style="font-family:var(--mono);font-size:.86em">model.generate</code>
+              timing rather than per-layer numbers is the next concrete step, and it requires extending the
+              kernel's decode path past its current batch-1 limit. Before more tuning, the L2-residency question
+              above has to be settled, or the benchmark is not testing what it claims to test.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card reveal" style="margin-top:26px">
+        <div class="card-body">
+          <h4 style="font-family:var(--mono);font-size:.73rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 13px">Built on</h4>
+          <div class="prose" style="max-width:none">
+            <ul style="font-size:.9rem">
+              <li><strong>Mustafar</strong> — Joo, Hosseini, Hadidi and Asgari, "Promoting unstructured sparsity for KV cache pruning in LLM inference," NeurIPS 2025.</li>
+              <li><strong>Coruscant</strong> — Joo, Hosseini, Hadidi and Asgari, "Co-designing GPU kernel and sparse tensor core to advocate unstructured sparsity in efficient LLM inference," MICRO 2025.</li>
+              <li><strong>KIVI</strong> — Liu et al., "A tuning-free asymmetric 2-bit quantization for KV cache," ICML 2024.</li>
+              <li><strong>VL-Cache</strong> — Tu et al., ICLR 2025, and <strong>AirCache</strong> — Huang et al., 2025, on modality-aware cache budgets.</li>
+              <li><strong>SparseVLM</strong>, <strong>FastVLM</strong> and <strong>Focus</strong> — visual-token reduction at the token and encoder level.</li>
+            </ul>
+            <p style="font-size:.88rem;color:var(--ink-3)">Full citations are in the paper.</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:11px;margin-top:30px">
+        <a class="btn btn-primary" href="DREU_KV_Cache_Pruning_Report.pdf" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+          Read the full paper (PDF)
+        </a>
+        <a class="btn btn-ghost" href="mailto:sshetty@terpmail.umd.edu">Ask me about it</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <div style="font-family:var(--display);font-weight:600;color:var(--ink);margin-bottom:4px">Shaashvat Shetty</div>
+      <div class="footer-note">Computer Science + Statistics, University of Maryland &middot; &copy; 2026</div>
+    </div>
+    <nav class="footer-links" aria-label="Footer">
+      <a href="index.html">Home</a>
+      <a href="projects.html">Projects</a>
+      <a href="teaching.html">Teaching</a>
+      <a href="Shaashvat_Shetty_Resume_2026.pdf" target="_blank" rel="noopener noreferrer">Résumé</a>
+      <a href="https://github.com/shaashvatshetty8" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="mailto:sshetty@terpmail.umd.edu">Email</a>
+    </nav>
+  </div>
+</footer>
+
+<button class="to-top" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5m0 0l-6 6m6-6l6 6"/></svg>
+</button>
+
+<script src="assets/site.js?v=2"></script>
+</body>
+</html>

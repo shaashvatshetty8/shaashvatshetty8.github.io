@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Projects | Shaashvat Shetty</title>
+<meta name="description" content="Detailed write-ups: HeyDoug multilingual code tutor, a personal-style chatbot fine-tuning pipeline, visual-token KV-cache pruning, Fashion-MNIST benchmarking, GPS map-matching and language-guided drone navigation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%236f9bff'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='17' font-weight='700' fill='%230b0c0f' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css?v=2">
+<script>
+  (function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<noscript><style>.reveal{opacity:1!important;transform:none!important}[role="tabpanel"][hidden]{display:block!important}.tabs{display:none}</style></noscript>
+</head>
+<body>
+<div class="bg-field" aria-hidden="true"></div>
+<div class="bg-grid" aria-hidden="true"></div>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="nav">
+      <a class="brand" href="index.html">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span>Shaashvat Shetty<br><span class="brand-sub">CS + Statistics, UMD</span></span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="research.html">Research</a>
+        <a href="index.html#experience">Experience</a>
+        <a href="projects.html">Projects</a>
+        <a href="teaching.html">Teaching</a>
+        <a href="index.html#about">About</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" data-theme-toggle type="button" aria-label="Toggle colour theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+        <button class="icon-btn menu-toggle" data-menu-toggle type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+        <a class="btn btn-primary btn-sm" href="Shaashvat_Shetty_Resume_2026.pdf" target="_blank" rel="noopener noreferrer">Résumé</a>
+      </div>
+    </div>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" hidden aria-label="Mobile">
+    <a href="index.html">Home</a>
+    <a href="research.html">Research</a>
+    <a href="projects.html">Projects</a>
+    <a href="teaching.html">Teaching</a>
+    <a href="index.html#contact">Contact</a>
+  </nav>
+  <div class="scroll-bar" aria-hidden="true"></div>
+</header>
+
+<main>
+
+  <section class="hero" style="padding-bottom:0">
+    <div class="wrap">
+      <span class="eyebrow">Projects</span>
+      <h1 style="font-size:clamp(2rem,4.6vw,3.2rem);max-width:16ch">Six things, <span class="grad">in detail</span>.</h1>
+      <p class="hero-lede" style="max-width:64ch">
+        Hackathon hardware, fine-tuned language models, a compressed KV cache and a couple of statistical
+        benchmarks. Each one below says what the hard part actually was.
+      </p>
+      <nav class="filters" aria-label="Jump to project" style="margin-top:8px">
+        <a class="chip" href="#heydoug">HeyDoug</a>
+        <a class="chip" href="#chatbot">Chatbot</a>
+        <a class="chip" href="#kvcache">KV cache</a>
+        <a class="chip" href="#fashion">Fashion-MNIST</a>
+        <a class="chip" href="#mapmatch">Map matching</a>
+        <a class="chip" href="#drone">Drone navigation</a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- ============ HEYDOUG ============ -->
+  <section id="heydoug" class="section">
+    <div class="wrap">
+      <div class="feature reveal">
+        <div class="feature-inner">
+          <div>
+            <span class="eyebrow">Bitcamp 2026 &middot; April 2026 &middot; team of four</span>
+            <h3>HeyDoug &mdash; a multilingual AI debugging tutor</h3>
+            <p>
+              Hold down a physical button wired to a Raspberry Pi, describe your bug out loud in English or
+              Spanish, and Doug highlights the offending line directly in your VS Code editor while speaking the
+              explanation back to you in the language you asked in.
+            </p>
+            <p>
+              The premise came from what existing assistants optimise for. Copilot and Cursor are built to
+              <em>output code</em>, which is a different goal from building a student's understanding. The gap
+              we aimed at was students who do not speak English as a first language and cannot afford tutoring.
+            </p>
+            <div class="tags" style="margin:18px 0">
+              <span class="tag tag--accent">JavaScript</span><span class="tag tag--accent">Python</span>
+              <span class="tag">VS Code API</span><span class="tag">Gemini 2.0 Flash</span>
+              <span class="tag">ElevenLabs</span><span class="tag">DeepL</span>
+              <span class="tag">MongoDB Atlas</span><span class="tag">Raspberry Pi</span><span class="tag">gpiozero</span>
+            </div>
+            <a class="btn btn-primary btn-sm" href="https://github.com/jordanabe23/bitcamp2026-vscode-extension" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.38-3.88-1.38-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.5 3.17-1.18 3.17-1.18.63 1.59.23 2.76.12 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.41-5.25 5.69.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5z"/></svg>
+              View on GitHub
+            </a>
+          </div>
+
+          <div>
+            <h4 style="font-family:var(--mono);font-size:.73rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 14px">How a question travels</h4>
+            <div class="timeline">
+              <div class="tl-item"><span class="tl-dot" aria-hidden="true"></span><div class="tl-card" style="padding:14px 16px">
+                <div class="tl-role" style="font-size:.95rem">1 &middot; Press and speak</div>
+                <p style="font-size:.87rem;margin:4px 0 0">A GPIO button starts a PulseAudio capture from a Bluetooth mic at 16&nbsp;kHz. A second physical switch selects English or Spanish.</p>
+              </div></div>
+              <div class="tl-item"><span class="tl-dot" aria-hidden="true"></span><div class="tl-card" style="padding:14px 16px">
+                <div class="tl-role" style="font-size:.95rem">2 &middot; Transcribe and queue</div>
+                <p style="font-size:.87rem;margin:4px 0 0">Release uploads the clip to ElevenLabs speech-to-text. The transcript becomes a job document in MongoDB Atlas, which decouples the hardware from the editor entirely.</p>
+              </div></div>
+              <div class="tl-item"><span class="tl-dot" aria-hidden="true"></span><div class="tl-card" style="padding:14px 16px">
+                <div class="tl-role" style="font-size:.95rem">3 &middot; Read the codebase</div>
+                <p style="font-size:.87rem;margin:4px 0 0">The extension polls that queue, translates Spanish to English through DeepL when needed, and sends the question plus up to 25 workspace files to Gemini.</p>
+              </div></div>
+              <div class="tl-item is-current"><span class="tl-dot" aria-hidden="true"></span><div class="tl-card" style="padding:14px 16px">
+                <div class="tl-role" style="font-size:.95rem">4 &middot; Highlight and speak</div>
+                <p style="font-size:.87rem;margin:4px 0 0">Gemini returns structured JSON naming the file, line and explanation. The extension highlights that line, dims the rest, renders the answer in a sidebar, and sends it back out as speech in the original language.</p>
+              </div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-grid reveal" style="margin-top:18px">
+        <div class="card skill-card">
+          <h4>What I'd point at</h4>
+          <p style="font-size:.91rem;margin:0">Using a database as the message bus between a Pi and a VS Code extension meant neither side had to know the other existed, or share a network. It is not elegant, but at a hackathon it turned an integration problem into two independent ones.</p>
+        </div>
+        <div class="card skill-card">
+          <h4>Robustness details</h4>
+          <p style="font-size:.91rem;margin:0">A 30-second hard timeout per model call, retry on rate-limit responses with a live "retrying, 1 of 3" status in the footer, and a greeting fast-path that skips gathering the codebase when someone just says hello.</p>
+        </div>
+        <div class="card skill-card">
+          <h4>Beyond one bug</h4>
+          <p style="font-size:.91rem;margin:0">Multi-bug and multi-file highlighting, per-bug fix / skip / ignore-all controls, and a chat panel that carries the last five exchanges into the next prompt so follow-up questions work.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ============ CHATBOT ============ -->
+  <section id="chatbot" class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Personal project</span>
+        <h2>A chatbot fine-tuned to text like me</h2>
+        <p>Turning a personal message archive into a training set, fine-tuning a small Llama on it, and serving the result locally.</p>
+      </div>
+
+      <div class="note reveal" style="max-width:70ch;margin-bottom:26px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        <span>
+          <strong style="color:var(--ink-2)">On the data.</strong> The training set is private correspondence
+          between real people, so it is not published here, not committed to any repository, and never leaves the
+          machine it was built on. The exports, the parsed conversations, the JSONL splits and the trained adapter
+          all stay local. What is described below is the method, not the data.
+        </span>
+      </div>
+
+      <div class="prose reveal">
+        <p>
+          The idea is simple enough to state and fiddly to execute: a model that replies the way I actually text,
+          lowercase and short, rather than the way an assistant thinks a person texts. The interesting work is
+          almost entirely in the dataset, not the training.
+        </p>
+
+        <h3>The pipeline</h3>
+        <ul>
+          <li><strong>Export.</strong> A shell step dumps the local message database to one plain-text file per conversation. It needs full-disk access, which is itself a useful reminder of how sensitive the input is.</li>
+          <li><strong>Parse.</strong> A regex block parser pulls timestamp, sender and body out of each export, then strips the noise that would otherwise be learned as style: tapback reactions, attachment placeholders, link unfurls and leaked file paths. Consecutive messages from the same person get merged into a single turn, because that is what a turn actually is.</li>
+          <li><strong>Build the dataset.</strong> A sliding window of the three previous turns becomes the user message, and my own reply becomes the assistant message, under a fixed system prompt describing the voice. Replies over 200 characters are dropped as unrepresentative. The result is roughly 3,000 instruction pairs in chat-format JSONL, split 90/10 into train and validation.</li>
+          <li><strong>Fine-tune.</strong> 4-bit QLoRA on <code>Llama-3.2-3B-Instruct</code> through Unsloth and PEFT, LoRA rank 16, targeting the attention and MLP projections, trained with TRL's supervised trainer for two epochs on a cosine schedule at a 512-token context. The best validation-loss checkpoint wins. An alternate path uploads the same JSONL to a hosted fine-tuning API for comparison.</li>
+          <li><strong>Serve.</strong> A FastAPI server loads the base model in half precision and applies the LoRA adapter on top, selecting Apple Silicon, CUDA or CPU automatically. A single POST endpoint takes a message plus history and returns a reply, sampled short and warm to match the register.</li>
+          <li><strong>Interface.</strong> One HTML file, no framework and no dependencies, styled as a phone messaging app with a status bar, bubbles, a live clock and animated typing dots. It rebuilds the last three turns into exactly the format used during training, which matters more than it sounds like it should.</li>
+        </ul>
+
+        <h3>What I learned</h3>
+        <p>
+          Two things. First, the gap between "the model saw this format" and "the model sees this format at
+          inference" is where personality models quietly fail — the UI has to reconstruct the prompt the same way
+          the dataset did, or the fine-tune appears not to have worked. Second, most of the quality came from
+          cleaning decisions that look trivial written down. Merging consecutive messages and dropping long
+          replies changed the output register far more than any hyperparameter did.
+        </p>
+      </div>
+
+      <div class="skill-grid reveal" style="margin-top:8px">
+        <div class="card skill-card">
+          <h4>Dataset</h4>
+          <div class="result-v" style="font-size:1.4rem">~3,000</div>
+          <p style="font-size:.86rem;color:var(--ink-3);margin:4px 0 0">instruction pairs after cleaning, split 90/10</p>
+        </div>
+        <div class="card skill-card">
+          <h4>Base model</h4>
+          <div class="result-v" style="font-size:1.4rem">Llama-3.2-3B</div>
+          <p style="font-size:.86rem;color:var(--ink-3);margin:4px 0 0">Instruct, 4-bit QLoRA, LoRA rank 16</p>
+        </div>
+        <div class="card skill-card">
+          <h4>Serving</h4>
+          <div class="result-v" style="font-size:1.4rem">Local only</div>
+          <p style="font-size:.86rem;color:var(--ink-3);margin:4px 0 0">FastAPI + adapter, no hosted inference, no data leaves the machine</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ============ KV CACHE ============ -->
+  <section id="kvcache" class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Research engineering</span>
+        <h2>A bitmap-compressed KV cache that reports its own size</h2>
+        <p>The systems half of the DREU research project, treated as an artefact rather than a result.</p>
+      </div>
+      <div class="prose reveal">
+        <p>
+          Unstructured sparsity is normally hard to use on a GPU. The surviving values sit at irregular
+          positions, and finding them can cost more than the skipped work saves. The answer, borrowed from
+          Coruscant and Mustafar, is a bitmap format: cut the tensor into 64-element tiles, keep each tile's
+          nonzero values packed tightly together, and store one bit per element marking which positions survived
+          plus a 32-bit offset into the packed array. Nonzero counts are padded to multiples of eight so memory
+          reads stay aligned.
+        </p>
+        <p>
+          The part I care about is the verification. A CPU test suite proves the compressed path produces
+          bit-identical output to the dense path, and a full parity run on real examples returned identical
+          predictions. The cache then reports its actual byte count during generation, so the memory numbers in
+          the write-up are measured rather than derived — and they land within one to two percentage points of
+          what the analytic model predicts.
+        </p>
+      </div>
+      <div class="tags reveal" style="margin:18px 0 22px">
+        <span class="tag tag--accent">PyTorch</span><span class="tag">CUDA</span><span class="tag">Triton</span><span class="tag">Hugging Face</span><span class="tag">Qwen2.5-VL</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:11px">
+        <a class="btn btn-primary btn-sm" href="research.html">Full research write-up</a>
+        <a class="btn btn-ghost btn-sm" href="DREU_KV_Cache_Pruning_Report.pdf" target="_blank" rel="noopener noreferrer">Paper (PDF)</a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ============ FASHION MNIST ============ -->
+  <section id="fashion" class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">STAT 426 &middot; May 2025</span>
+        <h2>Seven classifiers, one dataset, one honest comparison</h2>
+      </div>
+      <div class="prose reveal">
+        <p>
+          A benchmark of seven models on Fashion-MNIST, from classical algorithms like support vector machines
+          through to a convolutional network built for the task. The point was not to find the winner — everyone
+          knows the CNN wins — but to quantify what you give up by not using one, and what it costs you to use one.
+        </p>
+        <ul>
+          <li>PCA for dimensionality reduction, with the retained-variance choice justified rather than assumed.</li>
+          <li>Five-fold cross-validation on every model, so the ranking is not an artefact of one split.</li>
+          <li>Confusion matrices to see <em>which</em> garments each model confuses, which is where the classical models differ most interestingly from each other.</li>
+          <li>An engineered CNN reaching <strong>91.05% accuracy</strong>, against the traditional baselines.</li>
+          <li>A trade-off analysis pairing accuracy gained against training cost paid.</li>
+        </ul>
+      </div>
+      <div class="tags reveal" style="margin:18px 0 22px">
+        <span class="tag tag--accent">Python</span><span class="tag">TensorFlow</span><span class="tag">Keras</span><span class="tag">scikit-learn</span><span class="tag">PCA</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:11px">
+        <a class="btn btn-primary btn-sm" href="stat426_final_report.pdf" target="_blank" rel="noopener noreferrer">Final report (PDF)</a>
+        <a class="btn btn-ghost btn-sm" href="report_Fashion_MNIST.pdf" target="_blank" rel="noopener noreferrer">Notebook (PDF)</a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ============ MAP MATCHING ============ -->
+  <section id="mapmatch" class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">CMSC 396H Honors &middot; 2025</span>
+        <h2>Which map-matching algorithm survives a bad GPS fix?</h2>
+      </div>
+      <div class="prose reveal">
+        <p>
+          Map matching is the problem of deciding which road a noisy GPS trace was actually on. I implemented
+          four algorithms from scratch and designed a test harness that puts each of them in the conditions it is
+          supposed to handle well and the conditions it is not.
+        </p>
+        <ul>
+          <li>Synthetic trajectories generated with <em>controlled</em> noise, so error magnitude is an independent variable rather than whatever the recorder happened to produce.</li>
+          <li>Dense urban road networks, where candidate roads are close together and the decision is hard, against sparse rural ones, where the failure mode is different.</li>
+          <li>The same metrics across all four, so the comparison means something.</li>
+        </ul>
+      </div>
+      <div class="tags reveal" style="margin:18px 0 22px">
+        <span class="tag tag--accent">Python</span><span class="tag">Algorithms</span><span class="tag">Geospatial</span><span class="tag">Simulation</span>
+      </div>
+      <a class="btn btn-primary btn-sm" href="CMSC396H_Final_Report.pdf" target="_blank" rel="noopener noreferrer">Final report (PDF)</a>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ============ DRONE ============ -->
+  <section id="drone" class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">UCSC Science Internship Program &middot; Summer 2022</span>
+        <h2>Telling a drone what to look for, in plain English</h2>
+      </div>
+      <div class="prose reveal">
+        <p>
+          An object detector knows a fixed list of labels. A person giving an instruction does not. This project
+          bridged that gap so a drone could take a natural-language command, work out what object it referred to,
+          and go find it visually.
+        </p>
+        <ul>
+          <li>Benchmarked YOLOv5 against YOLOv3 and chose <strong>YOLOv3 for roughly 35% faster inference</strong> on the constrained onboard hardware — the newer model was not the right model for the constraint.</li>
+          <li>Matched the command's target word to the detector's label set with cosine similarity over word embeddings, which absorbs synonym variation without retraining anything.</li>
+          <li>Wired detection and matching together into a navigation loop that tracks the identified object.</li>
+        </ul>
+      </div>
+      <div class="tags reveal" style="margin:18px 0 22px">
+        <span class="tag tag--accent">Python</span><span class="tag">YOLOv3</span><span class="tag">NLP</span><span class="tag">Computer vision</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:11px">
+        <a class="btn btn-primary btn-sm" href="https://github.com/ShaashvatShetty/Vln_objectDetection" target="_blank" rel="noopener noreferrer">GitHub repository</a>
+        <a class="btn btn-ghost btn-sm" href="https://prezi.com/p/gyevliu1xxti/?present=1" target="_blank" rel="noopener noreferrer">Presentation</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="wrap">
+      <div class="contact-card reveal">
+        <h2 style="font-size:clamp(1.4rem,3vw,2rem)">Want the longer version of any of these?</h2>
+        <p style="color:var(--ink-2);max-width:52ch;margin-inline:auto">Happy to walk through the parts that didn't make it onto the page.</p>
+        <div class="contact-links">
+          <a class="btn btn-primary" href="mailto:sshetty@terpmail.umd.edu">sshetty@terpmail.umd.edu</a>
+          <a class="btn btn-ghost" href="Shaashvat_Shetty_Resume_2026.pdf" target="_blank" rel="noopener noreferrer">Résumé (PDF)</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <div style="font-family:var(--display);font-weight:600;color:var(--ink);margin-bottom:4px">Shaashvat Shetty</div>
+      <div class="footer-note">Computer Science + Statistics, University of Maryland &middot; &copy; 2026</div>
+    </div>
+    <nav class="footer-links" aria-label="Footer">
+      <a href="index.html">Home</a>
+      <a href="research.html">Research</a>
+      <a href="teaching.html">Teaching</a>
+      <a href="Shaashvat_Shetty_Resume_2026.pdf" target="_blank" rel="noopener noreferrer">Résumé</a>
+      <a href="https://github.com/shaashvatshetty8" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="mailto:sshetty@terpmail.umd.edu">Email</a>
+    </nav>
+  </div>
+</footer>
+
+<button class="to-top" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5m0 0l-6 6m6-6l6 6"/></svg>
+</button>
+
+<script src="assets/site.js?v=2"></script>
+</body>
+</html>
