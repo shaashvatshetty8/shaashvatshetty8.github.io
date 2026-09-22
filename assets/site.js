@@ -104,13 +104,18 @@
       var run = function (el) {
         var target = parseFloat(el.getAttribute('data-count'));
         var dec = parseInt(el.getAttribute('data-decimals') || '0', 10);
-        if (reduced || isNaN(target)) { el.textContent = target.toFixed(dec); return; }
+        var fmt = function (n) {
+          try {
+            return n.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+          } catch (e) { return n.toFixed(dec); }
+        };
+        if (reduced || isNaN(target)) { el.textContent = fmt(target); return; }
         var t0 = null, dur = 1100;
         var step = function (ts) {
           if (t0 === null) t0 = ts;
           var p = Math.min(1, (ts - t0) / dur);
           var e = 1 - Math.pow(1 - p, 3);
-          el.textContent = (target * e).toFixed(dec);
+          el.textContent = fmt(target * e);
           if (p < 1) requestAnimationFrame(step);
         };
         requestAnimationFrame(step);

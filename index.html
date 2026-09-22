@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%236f9bff'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='17' font-weight='700' fill='%230b0c0f' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="assets/style.css?v=2">
+<link rel="stylesheet" href="assets/style.css?v=4">
 <script>
   (function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </script>
@@ -344,7 +344,7 @@
             <p>An end-to-end pipeline that turns a personal message archive into a chat-format training set, fine-tunes a small Llama model on it with QLoRA, and serves the result locally behind a web UI that imitates a phone messaging app.</p>
             <ul class="proj-hi">
               <li>Parser strips tapbacks, attachments and link previews, then merges consecutive messages into turns</li>
-              <li>Sliding three-turn context window yields roughly 3,000 instruction pairs with a 90/10 split</li>
+              <li>Sliding three-turn context window over 212 conversations yields 3,050 instruction pairs, split 90/10</li>
               <li>4-bit QLoRA on Llama-3.2-3B-Instruct via Unsloth and PEFT; served by FastAPI with the adapter loaded at runtime</li>
             </ul>
             <div class="note">
@@ -352,7 +352,7 @@
               <span>The dataset is private personal correspondence. It is never published, never committed, and stays on one machine &mdash; only the code and the method are shared.</span>
             </div>
             <div class="proj-links">
-              <a class="tlink" href="projects.html#chatbot">How it works</a>
+              <a class="tlink" href="chatbot.html">Full write-up <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg></a>
             </div>
           </div>
         </article>
@@ -585,6 +585,6 @@
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5m0 0l-6 6m6-6l6 6"/></svg>
 </button>
 
-<script src="assets/site.js?v=2"></script>
+<script src="assets/site.js?v=4"></script>
 </body>
 </html>

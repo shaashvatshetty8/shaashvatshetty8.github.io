@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%236f9bff'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='17' font-weight='700' fill='%230b0c0f' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="assets/style.css?v=2">
+<link rel="stylesheet" href="assets/style.css?v=4">
 <script>
   (function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 </script>
@@ -179,7 +179,7 @@
         <ul>
           <li><strong>Export.</strong> A shell step dumps the local message database to one plain-text file per conversation. It needs full-disk access, which is itself a useful reminder of how sensitive the input is.</li>
           <li><strong>Parse.</strong> A regex block parser pulls timestamp, sender and body out of each export, then strips the noise that would otherwise be learned as style: tapback reactions, attachment placeholders, link unfurls and leaked file paths. Consecutive messages from the same person get merged into a single turn, because that is what a turn actually is.</li>
-          <li><strong>Build the dataset.</strong> A sliding window of the three previous turns becomes the user message, and my own reply becomes the assistant message, under a fixed system prompt describing the voice. Replies over 200 characters are dropped as unrepresentative. The result is roughly 3,000 instruction pairs in chat-format JSONL, split 90/10 into train and validation.</li>
+          <li><strong>Build the dataset.</strong> A sliding window of the three previous turns becomes the user message, and my own reply becomes the assistant message, under a fixed system prompt describing the voice. Replies under two characters or over 200 are dropped. Across 212 conversations the result is 3,050 instruction pairs in chat-format JSONL, split 90/10 into 2,745 training and 305 validation examples.</li>
           <li><strong>Fine-tune.</strong> 4-bit QLoRA on <code>Llama-3.2-3B-Instruct</code> through Unsloth and PEFT, LoRA rank 16, targeting the attention and MLP projections, trained with TRL's supervised trainer for two epochs on a cosine schedule at a 512-token context. The best validation-loss checkpoint wins. An alternate path uploads the same JSONL to a hosted fine-tuning API for comparison.</li>
           <li><strong>Serve.</strong> A FastAPI server loads the base model in half precision and applies the LoRA adapter on top, selecting Apple Silicon, CUDA or CPU automatically. A single POST endpoint takes a message plus history and returns a reply, sampled short and warm to match the register.</li>
           <li><strong>Interface.</strong> One HTML file, no framework and no dependencies, styled as a phone messaging app with a status bar, bubbles, a live clock and animated typing dots. It rebuilds the last three turns into exactly the format used during training, which matters more than it sounds like it should.</li>
@@ -195,11 +195,18 @@
         </p>
       </div>
 
+      <div style="display:flex;flex-wrap:wrap;gap:11px;margin:4px 0 26px">
+        <a class="btn btn-primary btn-sm" href="chatbot.html">
+          Full write-up, pipeline and interface
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg>
+        </a>
+      </div>
+
       <div class="skill-grid reveal" style="margin-top:8px">
         <div class="card skill-card">
           <h4>Dataset</h4>
-          <div class="result-v" style="font-size:1.4rem">~3,000</div>
-          <p style="font-size:.86rem;color:var(--ink-3);margin:4px 0 0">instruction pairs after cleaning, split 90/10</p>
+          <div class="result-v" style="font-size:1.4rem">3,050</div>
+          <p style="font-size:.86rem;color:var(--ink-3);margin:4px 0 0">instruction pairs from 212 conversations, split 90/10</p>
         </div>
         <div class="card skill-card">
           <h4>Base model</h4>
@@ -380,6 +387,6 @@
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5m0 0l-6 6m6-6l6 6"/></svg>
 </button>
 
-<script src="assets/site.js?v=2"></script>
+<script src="assets/site.js?v=4"></script>
 </body>
 </html>
