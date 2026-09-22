@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Shaashvat Shetty | CS &amp; Statistics @ UMD</title>
-<meta name="description" content="Shaashvat Shetty — Computer Science and Statistics at the University of Maryland. Research on KV-cache compression in vision-language models, network automation at Juniper Networks, and applied machine learning projects.">
+<meta name="description" content="Shaashvat Shetty — Computer Science and Statistics at the University of Maryland, graduating December 2026. Software engineering, machine learning and research projects.">
 <meta name="author" content="Shaashvat Shetty">
 <meta property="og:title" content="Shaashvat Shetty | CS &amp; Statistics @ UMD">
-<meta property="og:description" content="Research on KV-cache compression in vision-language models, network automation at Juniper Networks, and applied ML projects.">
+<meta property="og:description" content="Computer Science and Statistics at the University of Maryland. Software engineering, machine learning and research projects.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,7 +31,7 @@
         <span>Shaashvat Shetty<br><span class="brand-sub">CS + Statistics, UMD</span></span>
       </a>
       <nav class="nav-links" aria-label="Primary">
-        <a href="#research">Research</a>
+        <a href="research.html">Research</a>
         <a href="#experience">Experience</a>
         <a href="projects.html">Projects</a>
         <a href="teaching.html">Teaching</a>
@@ -53,7 +53,7 @@
     </div>
   </div>
   <nav class="mobile-menu" id="mobileMenu" hidden aria-label="Mobile">
-    <a href="#research">Research</a>
+    <a href="research.html">Research</a>
     <a href="#experience">Experience</a>
     <a href="projects.html">Projects</a>
     <a href="teaching.html">Teaching</a>
@@ -71,20 +71,20 @@
       <div class="hero-grid">
         <div>
           <span class="status-pill"><span class="dot" aria-hidden="true"></span> B.S. Computer Science + B.S. Statistics &middot; graduating December 2026</span>
-          <h1>Making large models <span class="grad">cheaper to run</span>.</h1>
-          <p class="hero-role">&gt; <span id="roleText" data-words="KV-cache compression for vision-language models|LLM inference profiling on GPU clusters|Symbolic regression for materials discovery|Network automation that runs in under 10 seconds"></span><span class="cursor" aria-hidden="true"></span></p>
+          <h1>Hi, I'm <span class="grad">Shaashvat</span>.</h1>
+          <p class="hero-role">&gt; <span id="roleText" data-words="Computer Science + Statistics at Maryland|Software engineering and machine learning|Network automation at Juniper Networks|Hackathon hardware and fine-tuned models"></span><span class="cursor" aria-hidden="true"></span></p>
           <p class="hero-lede">
-            I'm a Computer Science and Statistics student at the <strong>University of Maryland</strong>, working
-            at the systems end of machine learning. My current research asks how much of a vision-language model's
-            memory footprint you can throw away before it stops being able to read — and I measure the answer
-            rather than guessing it.
+            I'm a Computer Science and Statistics student at the <strong>University of Maryland</strong>,
+            graduating in December 2026. I like building things where the hard part is knowing whether they
+            actually work — a network tool that has to be right about hundreds of nodes, a model that has to
+            sound like a person, a benchmark that has to survive its own controls.
           </p>
           <div class="hero-cta">
-            <a class="btn btn-primary" href="#research">
-              Read the research
+            <a class="btn btn-primary" href="#projects">
+              See what I've built
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg>
             </a>
-            <a class="btn btn-ghost" href="projects.html">Browse projects</a>
+            <a class="btn btn-ghost" href="#contact">Get in touch</a>
           </div>
           <div class="hero-meta">
             <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> College Park, MD</span>
@@ -95,106 +95,6 @@
 
         <div class="portrait-frame reveal">
           <img class="portrait" src="1725014462228.jpeg" alt="Portrait of Shaashvat Shetty" width="200" height="200">
-          <div class="portrait-badge">
-            <span class="dot" aria-hidden="true"></span>
-            <span><b>Now:</b> independent study,<br>visual-token KV pruning</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ STATS ============ -->
-  <section class="section--tight">
-    <div class="wrap">
-      <div class="stats reveal">
-        <div class="stat">
-          <div class="stat-val"><span data-count="3.8" data-decimals="3">3.800</span></div>
-          <div class="stat-label">Cumulative GPA across two B.S. degrees</div>
-        </div>
-        <div class="stat">
-          <div class="stat-val"><span data-count="90">90</span><span class="unit">%</span></div>
-          <div class="stat-label">Visual Key-cache sparsity held at near-dense VQA accuracy</div>
-        </div>
-        <div class="stat">
-          <div class="stat-val"><span data-count="36">36</span></div>
-          <div class="stat-label">Decoder layers profiled across 1,050 multimodal samples</div>
-        </div>
-        <div class="stat">
-          <div class="stat-val">&lt;<span data-count="10">10</span><span class="unit">s</span></div>
-          <div class="stat-label">Network fault triage at Juniper, down from hours</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ FEATURED RESEARCH ============ -->
-  <section id="research" class="section">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="eyebrow">Featured research</span>
-        <h2>Profiling and pruning visual-token KV caches</h2>
-        <p>CRA-WP DREU, Summer 2026 &mdash; University of Maryland, advised by Prof. Bahar Asgari. Continuing as an independent study.</p>
-      </div>
-
-      <div class="feature reveal">
-        <div class="feature-inner">
-          <div>
-            <div class="tags" style="margin-bottom:16px">
-              <span class="tag tag--accent">Qwen2.5-VL-3B</span>
-              <span class="tag">PyTorch</span>
-              <span class="tag">CUDA / Triton</span>
-              <span class="tag">Hugging Face</span>
-              <span class="tag">UMIACS Nexus cluster</span>
-            </div>
-            <h3>Does a text-only pruning rule survive contact with images?</h3>
-            <p>
-              A vision-language model turns one page of a document into more than a thousand visual tokens, and every
-              one of them adds a Key and a Value entry at every layer. At that point the cache, not the weights,
-              is what you are paying for. Pruning methods like Mustafar shrink text caches by dropping small-magnitude
-              elements — but nobody had checked whether a visual token's cache has the structure that rule depends on.
-            </p>
-            <div class="finding">
-              <b>Finding.</b> Visual Key caches carry the same layer-wise outlier-channel concentration as text
-              Key caches, at comparable magnitude. There is no separate "visual regime" — the premise behind
-              text-only magnitude pruning holds for visual tokens too.
-            </div>
-            <div class="finding finding--open">
-              <b>Open problem.</b> The memory win is real and measured. The speed win is not: the vendored CUDA
-              kernel is correct on 500 examples per dataset, but 5&ndash;7&times; slower than FlashAttention-2 at this
-              model's narrow 16-query / 2-KV-head geometry. Stated plainly rather than worked around.
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:11px;margin-top:22px">
-              <a class="btn btn-primary btn-sm" href="research.html">
-                Full write-up, with charts
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg>
-              </a>
-              <a class="btn btn-ghost btn-sm" href="DREU_KV_Cache_Pruning_Report.pdf" target="_blank" rel="noopener noreferrer">Read the paper (PDF)</a>
-            </div>
-          </div>
-
-          <div class="result-grid">
-            <div class="result">
-              <div class="result-k">Cache memory</div>
-              <div class="result-v">&minus;56.5<span style="font-size:.7em">%</span></div>
-              <div class="result-n">Measured stored-cache bytes on TextVQA at Key 70% / Value 80%</div>
-            </div>
-            <div class="result">
-              <div class="result-k">Accuracy cost</div>
-              <div class="result-v">&minus;0.013</div>
-              <div class="result-n">TextVQA relaxed accuracy, 0.830 &rarr; 0.817</div>
-            </div>
-            <div class="result">
-              <div class="result-k">DocVQA (ANLS)</div>
-              <div class="result-v">0.915</div>
-              <div class="result-n">From a 0.921 dense baseline, a 0.006 drop</div>
-            </div>
-            <div class="result">
-              <div class="result-k">Random control</div>
-              <div class="result-v bad" style="color:var(--series-2)">0.49</div>
-              <div class="result-n">DocVQA collapses at just 50% sparsity — selection is what matters</div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -426,30 +326,6 @@
           </div>
         </article>
 
-        <!-- KV cache research card -->
-        <article class="card proj reveal" data-tags="llm systems">
-          <div class="proj-body">
-            <div class="proj-top">
-              <span class="proj-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/><path d="M7 7h.01M7 17h.01"/></svg></span>
-              <div>
-                <h3>Visual-token KV-cache pruning</h3>
-                <div class="proj-when">DREU research &middot; 2026</div>
-              </div>
-            </div>
-            <p>The research thread above, as an engineering artefact: a bitmap-compressed KV cache for Qwen2.5-VL that reports its own real byte count while the model generates.</p>
-            <ul class="proj-hi">
-              <li>64-element tiles with packed values, a 64-bit survivor bitmap and a 32-bit offset per tile</li>
-              <li>CPU test suite proves the compressed path is bit-identical to the dense path</li>
-              <li>Measured savings land within one to two points of the analytic model</li>
-            </ul>
-            <div class="tags"><span class="tag">PyTorch</span><span class="tag">CUDA</span><span class="tag">Triton</span></div>
-            <div class="proj-links">
-              <a class="tlink" href="research.html">Deep dive</a>
-              <a class="tlink" href="DREU_KV_Cache_Pruning_Report.pdf" target="_blank" rel="noopener noreferrer">Paper <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7m0 0H8m9 0v9"/></svg></a>
-            </div>
-          </div>
-        </article>
-
       </div>
     </div>
   </section>
@@ -513,24 +389,19 @@
       </div>
       <div class="prose reveal">
         <p>
-          I'm at the University of Maryland finishing dual bachelor's degrees in Computer Science and Statistics,
-          graduating in December 2026. The statistics half is not decoration. Most of what I enjoy about systems
-          work is the measurement: building a controlled comparison, holding the confounds still, and letting the
-          result say what it says even when that is inconvenient.
+          I am finishing dual bachelor's degrees in Computer Science and Statistics at the University of
+          Maryland and will graduate in December 2026. My coursework has given me a strong foundation across
+          algorithms, machine learning, computer systems, probability, and statistics, while my research has
+          pushed me to apply those ideas to open-ended problems in AI.
         </p>
         <p>
-          That shows up in the research. My DREU project could have reported a memory win and stopped there.
-          Instead it reports the memory win <em>and</em> a kernel that turned out slower than the baseline it was
-          supposed to beat, because the second result is the one that tells you where to work next.
-        </p>
-        <p>
-          Coursework worth naming: advanced data structures, algorithms, data science and machine learning,
+          Relevant coursework includes advanced data structures, algorithms, data science and machine learning,
           computer systems, domain-specific architectures, generative AI agents, and applied probability and
           statistics.
         </p>
         <p>
-          Away from a terminal I swim, play chess, and practise Bharatanatyam, a classical Indian dance form that
-          has taught me more about precision under pressure than any debugger has.
+          Outside of academics, I swim, play chess, and practice Bharatanatyam, a classical Indian dance form
+          that has taught me discipline, patience, and persistence.
         </p>
       </div>
     </div>
@@ -541,10 +412,10 @@
     <div class="wrap">
       <div class="contact-card reveal">
         <span class="eyebrow" style="margin-inline:auto">Get in touch</span>
-        <h2>Let's talk about making models cheaper</h2>
+        <h2>Let's talk</h2>
         <p style="color:var(--ink-2);max-width:56ch;margin-inline:auto">
-          I'm interested in inference efficiency, ML systems and anything where the measurement is the hard part.
-          If that overlaps with what you're working on, I'd like to hear about it.
+          I'm always glad to hear about internships, new-grad roles, or a project worth building.
+          The fastest way to reach me is email.
         </p>
         <div class="contact-links">
           <a class="btn btn-primary" href="mailto:sshetty@terpmail.umd.edu">
